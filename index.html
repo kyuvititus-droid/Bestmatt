@@ -66,3 +66,89 @@
   <footer>© Bestmatt</footer>
 </body>
   </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bestmatt</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; color: #222; }
+  header { background: #1a73e8; color: white; text-align: center; padding: 20px; }
+  h2 { padding: 0 15px; margin-top: 25px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
+  .card { background: white; border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; }
+  .card img { width: 100%; height: 130px; object-fit: cover; border-radius: 6px; background: #ddd; }
+  .price { color: #1a73e8; font-weight: bold; }
+  #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+  .box { background: white; width: 88%; max-width: 420px; max-height: 90%; overflow-y: auto;
+         border-radius: 10px; padding: 15px; position: relative; }
+  .box img { width: 100%; border-radius: 8px; }
+  .close { position: absolute; top: 8px; right: 8px; border: none; background: #fff;
+           font-size: 20px; border-radius: 50%; width: 36px; height: 36px; }
+  footer { text-align: center; padding: 20px; color: #777; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bestmatt</h1>
+  <p>Quality products at great prices</p>
+</header>
+
+<div id="shop"></div>
+
+<div id="modal" onclick="closeProduct()">
+  <div class="box" onclick="event.stopPropagation()">
+    <button class="close" onclick="closeProduct()">✕</button>
+    <img id="mImg" src="">
+    <h2 id="mName"></h2>
+    <p class="price" id="mPrice"></p>
+    <p id="mDesc"></p>
+  </div>
+</div>
+
+<footer>© Bestmatt</footer>
+
+<script>
+  // EDIT THIS LIST: one line per product
+  const products = [
+    { category: "Electronics", name: "Smartphone", price: "$200", image: "phone.jpg", description: "Fast phone with a big screen and long battery life." },
+    { category: "Electronics", name: "Headphones", price: "$25", image: "headphones.jpg", description: "Wireless headphones with clear sound." },
+    { category: "Clothing", name: "T-Shirt", price: "$10", image: "tshirt.jpg", description: "Soft cotton T-shirt in different sizes." },
+    { category: "Clothing", name: "Sneakers", price: "$30", image: "sneakers.jpg", description: "Comfortable sneakers for everyday use." },
+    { category: "Home and Kitchen", name: "Frying Pan", price: "$12", image: "pan.jpg", description: "Non-stick frying pan." },
+    { category: "Beauty", name: "Body Lotion", price: "$6", image: "lotion.jpg", description: "Moisturizing lotion for smooth skin." }
+  ];
+
+  const shop = document.getElementById("shop");
+  const categories = [...new Set(products.map(p => p.category))];
+
+  categories.forEach(cat => {
+    let html = "<h2>" + cat + "</h2><div class='grid'>";
+    products.forEach((p, i) => {
+      if (p.category === cat) {
+        html += "<div class='card' onclick='openProduct(" + i + ")'>" +
+                "<img src='" + p.image + "' alt='" + p.name + "'>" +
+                "<p>" + p.name + "</p><p class='price'>" + p.price + "</p></div>";
+      }
+    });
+    html += "</div>";
+    shop.innerHTML += html;
+  });
+
+  function openProduct(i) {
+    const p = products[i];
+    document.getElementById("mImg").src = p.image;
+    document.getElementById("mName").textContent = p.name;
+    document.getElementById("mPrice").textContent = p.price;
+    document.getElementById("mDesc").textContent = p.description;
+    document.getElementById("modal").style.display = "flex";
+  }
+
+  function closeProduct() {
+    document.getElementById("modal").style.display = "none";
+  }
+</script>
+</body>
+</html>
