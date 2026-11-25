@@ -127,5 +127,31 @@
   drawCats();
   render();
 </script>
-</body>
+</body>.card { animation: rise .6s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.card img { transition: transform .5s ease; }
+.card:hover img, .card:active img { transform: scale(1.1); }
+.sheet { animation: slideUp .35s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+#gMain { transition: opacity .3s ease; }
+.btn:not(.alt) { animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 </html>
+let slideTimer;
+const _open = openProduct;
+openProduct = function (i) {
+  _open(i);
+  clearInterval(slideTimer);
+  const imgs = products[i].images;
+  let n = 0;
+  if (imgs.length > 1) {
+    slideTimer = setInterval(() => {
+      n = (n + 1) % imgs.length;
+      const m = document.getElementById("gMain");
+      m.style.opacity = 0;
+      setTimeout(() => { m.src = imgs[n]; m.style.opacity = 1; }, 300);
+    }, 2500);
+  }
+};
+const _close = closeProduct;
+closeProduct = function () { clearInterval(slideTimer); _close(); };
